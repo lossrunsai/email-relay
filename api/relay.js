@@ -1,4 +1,17 @@
 export default async function handler(req, res) {
+  // --- CORS handling ---
+  const ORIGIN = '*'; // later you can change to 'https://truckagentfinder.com'
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', ORIGIN);
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Max-Age', '86400');
+    return res.status(200).end();
+  }
+  res.setHeader('Access-Control-Allow-Origin', ORIGIN);
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -7,7 +20,7 @@ export default async function handler(req, res) {
     const { subject, html, to, reply_to } = req.body;
 
     const payload = {
-      from: "Truck Agent Finder <quotes@yourdomain.com>", // must match your domain DNS setup with Resend
+      from: "Truck Agent Finder <quotes@mail.truckagentfinder.com>", // update with your verified Resend domain
       to,
       reply_to,
       subject,
@@ -26,12 +39,12 @@ export default async function handler(req, res) {
     const data = await resp.json();
     if (!resp.ok) {
       console.error("Resend error:", data);
-      return res.status(500).json({ error: "Failed to send", details: data });
+      return res.status(502).json({ error: "resend_failed", details: data });
     }
 
     return res.status(200).json({ success: true, data });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Unexpected error" });
+    return res.status(500).json({ error: "relay_error" });
   }
 }
