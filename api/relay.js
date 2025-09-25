@@ -1,7 +1,6 @@
 export default async function handler(req, res) {
   // --- CORS handling ---
-  const ORIGIN = 'https://truckagentfinder.com';
-; // for testing; later change to 'https://truckagentfinder.com'
+  const ORIGIN = 'https://truckagentfinder.com'; // for testing use '*' if needed
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', ORIGIN);
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
