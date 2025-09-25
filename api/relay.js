@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   // --- CORS handling ---
-  const ORIGIN = '*'; // allow all origins for testing
+  const ORIGIN = 'https://truckagentfinder.com'; // locked to your production domain
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', ORIGIN);
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // Apply CORS headers for POST requests too
+  // Apply CORS headers for POST requests
   res.setHeader('Access-Control-Allow-Origin', ORIGIN);
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
